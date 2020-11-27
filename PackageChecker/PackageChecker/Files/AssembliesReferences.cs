@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -40,8 +42,8 @@ namespace PackageChecker.Files
 			foreach (AssemblyName referencedAssembly in assembly.GetReferencedAssemblies())
 			{
 				string refAssemblyFullName = referencedAssembly.FullName;
-                bool exist = AssemblyExist(assembliesInFolder, additionalAssemblies, referencedAssembly);
-				if (exist)
+                bool notExist = AssemblyNotExist(assembliesInFolder, additionalAssemblies, referencedAssembly);
+				if (notExist)
 				{
 					missingAssemblies.Add(refAssemblyFullName);
 				}
@@ -57,25 +59,25 @@ namespace PackageChecker.Files
 			}
 		}
 
-        private bool AssemblyExist(HashSet<string> assembliesInFolder, HashSet<string> additionalAssemblies,
+        private bool AssemblyNotExist(HashSet<string> assembliesInFolder, HashSet<string> additionalAssemblies,
             AssemblyName referencedAssembly)
         {
             string refAssemblyFullName = referencedAssembly.FullName;
-            bool exist = !(assembliesInFolder.Contains(refAssemblyFullName) ||
-                           additionalAssemblies.Contains(refAssemblyFullName)) &&
-                         !AssemblyManager.IsAssemblyInGAC(referencedAssembly);
-            if (exist)
+            bool notExist = !(assembliesInFolder.Contains(refAssemblyFullName) || additionalAssemblies.Contains(refAssemblyFullName))
+                            &&
+                            !AssemblyManager.IsAssemblyInGAC(referencedAssembly);
+            if (!notExist)//means already exist
             {
-                return true;
+                return false;
             }
 
             //check bindingRedirect here
             var bindingRedirectFullName = GetBindingRedirectFullName(referencedAssembly.Name);
             var bindingRedirectAssembly = new AssemblyName(bindingRedirectFullName);
-            exist = !(assembliesInFolder.Contains(bindingRedirectFullName) ||
-                      additionalAssemblies.Contains(bindingRedirectFullName)) &&
-                    !AssemblyManager.IsAssemblyInGAC(bindingRedirectAssembly);
-            return exist;
+			notExist = !(assembliesInFolder.Contains(bindingRedirectFullName) || additionalAssemblies.Contains(bindingRedirectFullName)) 
+                       &&
+                       !AssemblyManager.IsAssemblyInGAC(bindingRedirectAssembly);
+            return notExist;
         }
 
         private string GetBindingRedirectFullName(string assemblyName)
