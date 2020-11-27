@@ -40,11 +40,13 @@ namespace PackageChecker.Files
 
 			List<string> missingAssemblies = new List<string>();
 			foreach (AssemblyName referencedAssembly in assembly.GetReferencedAssemblies())
-			{
-                bool notExist = AssemblyNotExist(assembliesInFolder, additionalAssemblies, referencedAssembly);
+            {
+                var temp = referencedAssembly;
+
+				bool notExist = AssemblyNotExist(assembliesInFolder, additionalAssemblies, ref temp);
 				if (notExist)
 				{
-					missingAssemblies.Add(referencedAssembly.FullName);
+					missingAssemblies.Add(temp.FullName);
 				}
 			}
 
@@ -59,7 +61,7 @@ namespace PackageChecker.Files
 		}
 
         private bool AssemblyNotExist(HashSet<string> assembliesInFolder, HashSet<string> additionalAssemblies,
-            AssemblyName referencedAssembly)
+            ref AssemblyName referencedAssembly)
 		{
 			//check bindingRedirect 
             bool bindingRedirectConfigured = false;
