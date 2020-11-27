@@ -37,8 +37,8 @@ namespace PackageChecker.Files
 			foreach (AssemblyName referencedAssembly in assembly.GetReferencedAssemblies())
 			{
 				string refAssemblyFullName = referencedAssembly.FullName;
-				if (!(assembliesInFolder.Contains(refAssemblyFullName) || additionalAssemblies.Contains(refAssemblyFullName)) &&
-					!AssemblyManager.IsAssemblyInGAC(referencedAssembly))
+                bool exist = AssemblyExist(assembliesInFolder, additionalAssemblies, referencedAssembly);
+				if (exist)
 				{
 					missingAssemblies.Add(refAssemblyFullName);
 				}
@@ -54,7 +54,18 @@ namespace PackageChecker.Files
 			}
 		}
 
-		private HashSet<string> GetAdditionalAssemblies(string folder, Assembly assembly)
+        private bool AssemblyExist(HashSet<string> assembliesInFolder, HashSet<string> additionalAssemblies,
+            AssemblyName referencedAssembly)
+        {
+            string refAssemblyFullName = referencedAssembly.FullName;
+            bool exist = !(assembliesInFolder.Contains(refAssemblyFullName) ||
+                           additionalAssemblies.Contains(refAssemblyFullName)) &&
+                         !AssemblyManager.IsAssemblyInGAC(referencedAssembly);
+
+            return exist;
+        }
+
+        private HashSet<string> GetAdditionalAssemblies(string folder, Assembly assembly)
 		{
 			HashSet<string> additionalAssemblies = new HashSet<string>();
 
