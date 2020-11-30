@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using PackageChecker.WindowManagement;
 
 namespace PackageChecker.Files
 {
@@ -42,8 +43,9 @@ namespace PackageChecker.Files
 			{
 				return GetAssemblyByName(assemblyName).GlobalAssemblyCache;
 			}
-			catch
+			catch(Exception ex)
 			{
+				WindowHelper.ShowError(ex.ToString());
 				return false;
 			}
 		}
