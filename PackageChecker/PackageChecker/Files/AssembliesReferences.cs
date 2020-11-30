@@ -71,7 +71,7 @@ namespace PackageChecker.Files
             {
                 var bindingRedirectAssembly = new AssemblyName(bindingRedirectFullName);
                 referencedAssembly = bindingRedirectAssembly;
-			}
+            }
 
             string refAssemblyFullName = referencedAssembly.FullName;
 			string strCheckGac = ConfigurationManager.AppSettings["CheckGac"];
@@ -94,6 +94,11 @@ namespace PackageChecker.Files
         private string GetBindingRedirectFullName(string assemblyName,ref bool bindingRedirectConfigured)
         {
             var filePath = ConfigurationManager.AppSettings["ConfigFileName"];
+            if (string.IsNullOrWhiteSpace(filePath))
+            {
+                bindingRedirectConfigured = false;
+                return null;
+            }
             var root = XElement.Load(filePath);
             var root2 = RemoveAllNamespaces(root);
             var runtime = root2.Element("runtime");
