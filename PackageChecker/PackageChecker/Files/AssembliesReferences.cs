@@ -74,9 +74,20 @@ namespace PackageChecker.Files
 			}
 
             string refAssemblyFullName = referencedAssembly.FullName;
-			bool notExist = !(assembliesInFolder.Contains(refAssemblyFullName) || additionalAssemblies.Contains(refAssemblyFullName))
-                            &&
-                            !AssemblyManager.IsAssemblyInGAC(referencedAssembly);
+			string strCheckGac = ConfigurationManager.AppSettings["CheckGac"];
+            bool checkGac = Convert.ToBoolean(strCheckGac);
+            bool notExist;
+            if (checkGac)
+            {
+                notExist = !(assembliesInFolder.Contains(refAssemblyFullName) || additionalAssemblies.Contains(refAssemblyFullName))
+                           &&
+                           !AssemblyManager.IsAssemblyInGAC(referencedAssembly);
+            }
+            else
+            {
+                notExist = !(assembliesInFolder.Contains(refAssemblyFullName) || additionalAssemblies.Contains(refAssemblyFullName));
+            }
+
             return notExist;
         }
 
