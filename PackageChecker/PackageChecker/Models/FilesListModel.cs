@@ -259,7 +259,7 @@ namespace PackageChecker.Models
 
 		private List<string> DirSearch(string dirPath)
 		{
-			UpdateProgressText("Dirrectory search");
+			UpdateProgressText("Directory search");
 			IsProgressIndeterminate(true);
 
 			List<string> files = new List<string>();
@@ -274,7 +274,12 @@ namespace PackageChecker.Models
 			}
 			foreach (string childDirPath in Directory.GetDirectories(dirPath))
 			{
-				files.AddRange(DirSearch(childDirPath));
+                if (childDirPath.Equals("roslyn", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                files.AddRange(DirSearch(childDirPath));
 			}
 
 			return files;
