@@ -274,7 +274,7 @@ namespace PackageChecker.Models
 			}
 			foreach (string childDirPath in Directory.GetDirectories(dirPath))
 			{
-                if (childDirPath.Equals("roslyn", StringComparison.OrdinalIgnoreCase))
+                if (childDirPath.IndexOf("roslyn", StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     continue;
                 }
