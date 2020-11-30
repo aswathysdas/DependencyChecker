@@ -195,23 +195,34 @@ namespace PackageChecker.Models
 				string fileCertificate = string.Empty;
 				string fileAssebbly = string.Empty;
 				string referencesCheck = string.Empty;
-				try
-				{
-					fileCertificate = X509Certificate.CreateFromSignedFile(filePath).Subject;
-				}
-				catch { }
-				try
-				{
-					fileAssebbly = AssemblyManager.GetAssemblyName(filePath).FullName;
-				}
-				catch { }
-				try
-				{
-					string fileFolder = Path.GetDirectoryName(filePath);
-					Assembly assembly = AssemblyManager.GetAssemblyByFile(filePath);
-					referencesCheck = references.CheckAssembly(fileFolder, assembly);
-				}
-				catch { }
+                try
+                {
+                    fileCertificate = X509Certificate.CreateFromSignedFile(filePath).Subject;
+                }
+                catch(Exception ex)
+                {
+					WindowHelper.ShowError(ex.ToString());
+                }
+
+                try
+                {
+                    fileAssebbly = AssemblyManager.GetAssemblyName(filePath).FullName;
+                }
+                catch (Exception ex)
+                {
+                    WindowHelper.ShowError(ex.ToString());
+                }
+
+                try
+                {
+                    string fileFolder = Path.GetDirectoryName(filePath);
+                    Assembly assembly = AssemblyManager.GetAssemblyByFile(filePath);
+                    referencesCheck = references.CheckAssembly(fileFolder, assembly);
+                }
+                catch (Exception ex)
+                {
+					WindowHelper.ShowError(ex.ToString());
+                }
 
 				allFiles.Add(new FileRecord()
 				{
@@ -243,12 +254,15 @@ namespace PackageChecker.Models
 			foreach (string filePath in filePaths)
 			{
 				string folder = Path.GetDirectoryName(filePath);
-				try
-				{
-					AssemblyName fileAssembly = AssemblyManager.GetAssemblyName(filePath);
-					references.AddAssembly(folder, fileAssembly);
-				}
-				catch { }
+                try
+                {
+                    AssemblyName fileAssembly = AssemblyManager.GetAssemblyName(filePath);
+                    references.AddAssembly(folder, fileAssembly);
+                }
+                catch (Exception ex)
+                {
+					WindowHelper.ShowError(ex.ToString());
+                }
 
 				currentItem++;
 				UpdateProgress(100 * currentItem / allItemsCount);
