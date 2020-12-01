@@ -25,8 +25,6 @@ namespace PackageChecker.Models
 
 		#region Binding Properties
 
-        public string ConfigFileValue { get; set; }
-
 		public string PathValue
 		{
 			get
@@ -87,7 +85,7 @@ namespace PackageChecker.Models
 
         public void SetConfigFileState(string configFilePath)
         {
-            ConfigFileValue = configFilePath;
+            ConfigHelper.ConfigFilePathValue = configFilePath;
         }
 
 		public void SetZipState(string path)
@@ -118,7 +116,7 @@ namespace PackageChecker.Models
 
 		public void SetEmptyState()
         {
-            ConfigFileValue = string.Empty;
+            ConfigHelper.ResetPath();
 			PathValue = string.Empty;
 
 			_filesListManager.ClearList();

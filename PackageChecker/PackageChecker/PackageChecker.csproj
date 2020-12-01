@@ -73,6 +73,7 @@
     <Compile Include="BindingBase\CopyToClipboard.cs" />
     <Compile Include="Files\AssembliesReferences.cs" />
     <Compile Include="Files\AssemblyManager.cs" />
+    <Compile Include="Files\ConfigHelper.cs" />
     <Compile Include="Files\FileRecord.cs" />
     <Compile Include="Files\FileSearchType.cs" />
     <Compile Include="Files\Serializer.cs" />
