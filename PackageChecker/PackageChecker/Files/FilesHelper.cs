@@ -8,6 +8,24 @@ namespace PackageChecker.Files
 {
 	internal static class FilesHelper
 	{
+        internal static string PickConfigFileDialog()
+        {
+            using (CommonOpenFileDialog fileDialog = new CommonOpenFileDialog())
+            {
+                fileDialog.Filters.Add(new CommonFileDialogFilter("config", ".config"));
+                fileDialog.EnsurePathExists = true;
+                fileDialog.Multiselect = false;
+
+                CommonFileDialogResult result = fileDialog.ShowDialog();
+                if (result == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(fileDialog.FileName))
+                {
+                    return fileDialog.FileName;
+                }
+
+                return string.Empty;
+            }
+		}
+
 		internal static string PickZipDialog()
 		{
 			using (CommonOpenFileDialog fileDialog = new CommonOpenFileDialog())

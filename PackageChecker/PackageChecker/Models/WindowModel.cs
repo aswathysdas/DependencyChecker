@@ -24,6 +24,9 @@ namespace PackageChecker.Models
 		#endregion //Private Properties
 
 		#region Binding Properties
+
+        public string ConfigFileValue { get; set; }
+
 		public string PathValue
 		{
 			get
@@ -81,6 +84,12 @@ namespace PackageChecker.Models
 		}
 
 		#region Commands Implementation
+
+        public void SetConfigFileState(string configFilePath)
+        {
+            ConfigFileValue = configFilePath;
+        }
+
 		public void SetZipState(string path)
 		{
 			SetProgressMode();
@@ -108,7 +117,8 @@ namespace PackageChecker.Models
 		}
 
 		public void SetEmptyState()
-		{
+        {
+            ConfigFileValue = string.Empty;
 			PathValue = string.Empty;
 
 			_filesListManager.ClearList();
