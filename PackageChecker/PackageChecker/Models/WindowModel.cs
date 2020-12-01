@@ -90,29 +90,33 @@ namespace PackageChecker.Models
 
 		public void SetZipState(string path)
 		{
-			SetProgressMode();
-
-			PathValue = path;
-
-			Task task = UpdateFilesList(MainWindowState.ZipFile);
-			if (task != null)
-			{
-				task.ContinueWith(t => DispatcherInvoke(() => SetPathMode(MainWindowState.ZipFile)));
-			}
+            SetState(path, MainWindowState.ZipFile);
 		}
 
 		public void SetFolderState(string path)
-		{
-			SetProgressMode();
+        {
+            SetState(path, MainWindowState.Folder);
+        }
 
-			PathValue = path;
+        public void SetState(string path,MainWindowState mainWindowState)
+        {
+            SetProgressMode();
 
-			Task task = UpdateFilesList(MainWindowState.Folder);
-			if (task != null)
-			{
-				task.ContinueWith(t => DispatcherInvoke(() => SetPathMode(MainWindowState.Folder)));
-			}
+            PathValue = path;
+
+            Task task = UpdateFilesList(mainWindowState);
+            if (task != null)
+            {
+                task.ContinueWith(t => DispatcherInvoke(() => SetPathMode(mainWindowState)));
+            }
 		}
+
+        public void RefreshState()
+        { 
+            var tempFolder = PathValue;
+            var tempMainWindowState= _windowState;
+            SetState(tempFolder, tempMainWindowState);
+        }
 
 		public void SetEmptyState()
         {

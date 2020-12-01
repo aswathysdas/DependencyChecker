@@ -18,14 +18,14 @@ namespace PackageChecker.ViewModels
 			_model.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
 			_model.SetEmptyState();
 
-			SetConfigFileState=new BindCommand(param =>
+            SetConfigFileState = new BindCommand(param =>
             {
                 string fileName = FilesHelper.PickConfigFileDialog();
                 if (!string.IsNullOrEmpty(fileName))
                 {
-                   _model.SetConfigFileState(fileName);
+                    _model.SetConfigFileState(fileName);
                 }
-			});
+            });
 
                 SetZipState = new BindCommand(param =>
 			{
@@ -44,6 +44,11 @@ namespace PackageChecker.ViewModels
 					_model.SetFolderState(folderPath);
 				}
 			});
+
+            RefreshState = new BindCommand(param =>
+            {
+                _model.RefreshState();
+            });
 
 			SetEmptyState = new BindCommand(param =>
 			{
@@ -78,6 +83,7 @@ namespace PackageChecker.ViewModels
 		public ICommand SetConfigFileState { get; }
 		public ICommand SetZipState { get; }
 		public ICommand SetFolderState { get; }
+		public ICommand RefreshState { get; }
 		public ICommand SetEmptyState { get; }
 		public ICommand ProcessDragAndDrop { get; }
 

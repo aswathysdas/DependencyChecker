@@ -16,6 +16,7 @@
 	<DockPanel Margin="10">
 		<DockPanel Name="PathPanel" DockPanel.Dock="Top" Visibility="{Binding PathPanelVisibility}">
 			<Button Name="SelectionCancel" Margin="5" Width="30" Height="30" DockPanel.Dock="Right" Command="{Binding SetEmptyState}">✖</Button>
+            <Button Name="Refresh" Margin="5" Width="30" Height="30" DockPanel.Dock="Right" Command="{Binding RefreshState}">⟳</Button>
 			<TextBox Name="PathTextBox" IsReadOnly="True" Margin="5" MaxLines="1" Text="{Binding PathValue}"></TextBox>
 		</DockPanel>
 		<DockPanel Name="ProgressPanel" DockPanel.Dock="Top" Visibility="{Binding CurrentVisibility}">
