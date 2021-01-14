@@ -12,20 +12,18 @@ namespace PackageChecker.Files
 			return AssemblyName.GetAssemblyName(filePath);
 		}
 
-		internal static Assembly GetAssemblyByFile(string fileName)
-		{
-			AssemblyName assemblyName = GetAssemblyName(fileName);
+        internal static Assembly GetAssemblyByFile(string fileName)
+        {
+            var assembly = Assembly.ReflectionOnlyLoadFrom(fileName);
+            if (assembly == null)
+            {
+                throw new FileNotFoundException(fileName);
+            }
 
-			Assembly assembly = GetFirstOrDefaultAssembly(assemblyName.FullName);
-			if (assembly == null)
-			{
-				assembly = Assembly.Load(File.ReadAllBytes(fileName));
-			}
+            return assembly;
+        }
 
-			return assembly;
-		}
-
-		internal static Assembly GetAssemblyByName(AssemblyName assemblyName)
+        internal static Assembly GetAssemblyByName(AssemblyName assemblyName)
 		{
 			Assembly assembly = GetFirstOrDefaultAssembly(assemblyName.FullName);
 			if (assembly == null)
